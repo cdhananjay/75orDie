@@ -1,0 +1,26 @@
+{
+  "name": "attendance-tracker",
+  "version": "1.0.0",
+  "description": "a website which to track your attendance",
+  "license": "ISC",
+  "author": "Dhananjay Chavan",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "npx tsx --env-file=.env --watch  src/index.ts",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3"
+  },
+  "devDependencies": {
+    "@types/cookie-parser": "^1.4.10",
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.0.10",
+    "typescript": "^5.9.3"
+  }
+}
