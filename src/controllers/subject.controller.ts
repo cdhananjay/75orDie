@@ -3,8 +3,6 @@ import db from '../index.js';
 import { subjectsTable } from '../db/schema.js';
 import { eq } from 'drizzle-orm';
 
-// all routes untested
-
 export const getSubjects = async (req: Request, res: Response) => {
     if (!req.userId)
         return res.send({ ok: false, message: 'user must be logged in' });
@@ -21,17 +19,28 @@ export const getSubjects = async (req: Request, res: Response) => {
 };
 
 export const createSubject = async (req: Request, res: Response) => {
-    if (!req.subjectId)
-        return res.send({ ok: false, message: 'subject id not provided' });
+    if (!req.userId)
+        return res.send({ ok: false, message: 'user must be logged in' });
+    if (!req.body.subjectName)
+        return res.send({ ok: false, message: 'subject name not provided' });
     try {
-        const subjects = await db
+        const [preExistingSubject] = await db
             .select()
             .from(subjectsTable)
-            .where(eq(subjectsTable.id, req.subjectId));
-        res.send({ ok: true, subjects });
+            .where(eq(subjectsTable.userId, req.userId))
+            .limit(1);
+        if (preExistingSubject)
+            return res.send({
+                ok: false,
+                message: 'subject with same name already exists',
+            });
+        await db
+            .insert(subjectsTable)
+            .values({ name: req.body.name, userId: req.userId });
+        res.send({ ok: true, message: 'created subject' });
     } catch (error) {
-        res.send({ ok: false, message: 'error fetching subjects' });
-        console.log('error fetching subjects', error);
+        res.send({ ok: false, message: 'Error creating subject.' });
+        console.log('error creating subject', error);
     }
 };
 
@@ -77,6 +86,7 @@ export const deleteSubject = async (req: Request, res: Response) => {
         await db
             .delete(subjectsTable)
             .where(eq(subjectsTable.id, req.subjectId));
+        return res.send({ ok: true, message: 'subject deleted' });
     } catch (error) {
         res.send({ ok: false, message: 'error deleting subject' });
         console.log('error deleting subject', error);

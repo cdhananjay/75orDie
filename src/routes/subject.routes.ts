@@ -10,8 +10,6 @@ import {
 import requireAuth from '../middlewares/requireAuth.js';
 import requireSubjectName from '../middlewares/requireSubjectName.js';
 
-// all routes untested
-
 subjectRouter.get('/', requireAuth, getSubjects);
 subjectRouter.post('/', requireAuth, createSubject);
 subjectRouter.patch('/', requireAuth, requireSubjectName, updateSubject);

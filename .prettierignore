@@ -7,7 +7,6 @@ node_modules
 .gitignore
 .prettierignore
 .prettierrc
-design.svg
 drizzle.config.ts
 example.env
 package.json
