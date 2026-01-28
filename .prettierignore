@@ -13,3 +13,12 @@ package.json
 package-lock.json
 README.md
 tsconfig.json
+client/node_modules
+client/.gitignore
+client/eslint.config.js
+client/package.json
+client/package-lock.json
+client/tsconfig.app.json
+client/tsconfig.json
+client/tsconfig.node.json
+client/vite.config.ts

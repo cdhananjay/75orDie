@@ -7,10 +7,12 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "prettier" : "npx prettier . --write",
-    "build": "tsc",
-    "dev": "tsx --env-file=.env --watch  src/index.ts",
-    "start": "node dist/index.js"
+    "prettier": "npx prettier . --write",
+    "build": "tsc && npm run build --prefix client",
+    "dev:server": "tsx --env-file=.env --watch  src/index.ts",
+    "start": "node server/index.js",
+    "dev:client": "npm run dev --prefix client",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\""
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.2",
@@ -26,6 +28,7 @@
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.0.10",
+    "concurrently": "^9.2.1",
     "drizzle-kit": "^0.31.8",
     "prettier": "3.8.1",
     "tsx": "^4.21.0",
