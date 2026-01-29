@@ -14,6 +14,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ThemeToggleButton } from '@/components/ThemeToggleButton';
 import { toast } from 'sonner';
+import Footer from '@/components/Footer';
 
 const LoginPage = () => {
     const nav = useNavigate();
@@ -35,73 +36,88 @@ const LoginPage = () => {
         }
     }
     return (
-        <main className={'flex flex-col justify-center items-center gap-10'}>
-            <div className="fixed top-4 right-4">
-                <ThemeToggleButton />
-            </div>
-            <div className={'flex gap-5 flex-col justify-center items-center'}>
-                <img className={'w-30'} src="/vite.svg" alt={'logo'} />
-                <h1 className={'text-3xl font-extrabold'}>
-                    Attendance Tracker
-                </h1>
-            </div>
-            <Card className="w-full max-w-sm">
-                <CardHeader>
-                    <CardTitle>Login to your account</CardTitle>
-                    <CardDescription>
-                        Enter your username below to login to your account
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <form>
-                        <div className="flex flex-col gap-6">
-                            <div className="grid gap-2">
-                                <Label htmlFor="username">Username</Label>
-                                <Input
-                                    onChange={(e) =>
-                                        setUsername(e.target.value)
-                                    }
-                                    id="username"
-                                    type="text"
-                                    required
-                                />
-                            </div>
-                            <div className="grid gap-2">
-                                <div className="flex items-center">
-                                    <Label htmlFor="password">Password</Label>
+        <div
+            className={'flex flex-col items-center justify-center min-h-screen'}
+        >
+            <main
+                className={'flex flex-col justify-center items-center gap-10'}
+            >
+                <div className="fixed top-4 right-4">
+                    <ThemeToggleButton />
+                </div>
+                <div
+                    className={
+                        'flex gap-5 flex-col justify-center items-center'
+                    }
+                >
+                    <img className={'w-30'} src="/vite.svg" alt={'logo'} />
+                    <h1 className={'text-3xl font-extrabold'}>
+                        Attendance Tracker
+                    </h1>
+                </div>
+                <Card className="w-full max-w-sm">
+                    <CardHeader>
+                        <CardTitle>Login to your account</CardTitle>
+                        <CardDescription>
+                            Enter your username below to login to your account
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <form>
+                            <div className="flex flex-col gap-6">
+                                <div className="grid gap-2">
+                                    <Label htmlFor="username">Username</Label>
+                                    <Input
+                                        onChange={(e) =>
+                                            setUsername(e.target.value)
+                                        }
+                                        id="username"
+                                        type="text"
+                                        required
+                                    />
                                 </div>
-                                <Input
-                                    onChange={(e) =>
-                                        setPassword(e.target.value)
-                                    }
-                                    id="password"
-                                    type="password"
-                                    required
-                                />
+                                <div className="grid gap-2">
+                                    <div className="flex items-center">
+                                        <Label htmlFor="password">
+                                            Password
+                                        </Label>
+                                    </div>
+                                    <Input
+                                        onChange={(e) =>
+                                            setPassword(e.target.value)
+                                        }
+                                        id="password"
+                                        type="password"
+                                        required
+                                    />
+                                </div>
                             </div>
-                        </div>
-                    </form>
-                </CardContent>
-                <CardFooter className="flex-col gap-2">
-                    <Button
-                        onClick={(e) => submitForm(e)}
-                        type="submit"
-                        className="w-full"
-                    >
-                        Login
-                    </Button>
-                    <p className={'flex text-sm gap-1 items-center'}>
-                        New User?
-                        <Link
-                            to="/register"
-                            className="text-primary inline-block text-sm underline-offset-4 hover:underline"
+                        </form>
+                    </CardContent>
+                    <CardFooter className="flex-col gap-2">
+                        <Button
+                            onClick={(e) => submitForm(e)}
+                            type="submit"
+                            className="w-full"
                         >
-                            Register Instead
-                        </Link>
-                    </p>
-                </CardFooter>
-            </Card>
-        </main>
+                            Login
+                        </Button>
+                        <p className={'flex text-sm gap-1 items-center'}>
+                            New User?
+                            <Link
+                                to="/register"
+                                className="text-primary inline-block text-sm underline-offset-4 hover:underline"
+                            >
+                                Register Instead
+                            </Link>
+                        </p>
+                    </CardFooter>
+                </Card>
+            </main>
+            <div className={'fixed bottom-0 right-0 left-0'}>
+                <Footer />
+            </div>
+        </div>
     );
 };
 

@@ -61,7 +61,7 @@ export const login = async (req: Request, res: Response) => {
     if (!(req.body.username && req.body.password))
         return res.send({
             ok: false,
-            message: 'username and password is required to register',
+            message: 'username and password is required to login',
         });
     const { username, password } = req.body;
     try {
@@ -70,10 +70,18 @@ export const login = async (req: Request, res: Response) => {
             .from(usersTable)
             .where(eq(usersTable.username, username))
             .limit(1);
-        if (!user) return res.send({ ok: false, message: 'user not found' });
+        if (!user)
+            return res.send({
+                ok: false,
+                message: 'username or password is incorrect',
+            });
 
         const result = await bcrypt.compare(password, user.passwordHash);
-        if (!result) res.send({ ok: false, message: 'passwords dont match' });
+        if (!result)
+            res.send({
+                ok: false,
+                message: 'username or password is incorrect',
+            });
 
         const token = jwt.sign(
             {
@@ -92,5 +100,5 @@ export const login = async (req: Request, res: Response) => {
 
 export const logout = (req: Request, res: Response) => {
     res.clearCookie('token');
-    return res.send({ ok: true, message: 'cookies cleared' });
+    return res.send({ ok: true, message: 'logged out user' });
 };

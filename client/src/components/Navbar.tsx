@@ -19,17 +19,27 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { ThemeToggleButton } from '@/components/ThemeToggleButton';
 import axios from 'axios';
+import { toast } from 'sonner';
 const Navbar = () => {
     const navigate = useNavigate();
 
     async function logoutUser() {
         try {
             const { data } = await axios.post('/api/auth/logout');
-            if (data.ok) alert('logged out');
-            else alert(data.message);
+            if (data.ok)
+                toast.success('logged out', {
+                    position: 'top-center',
+                });
+            else
+                toast.error(data.message, {
+                    position: 'top-center',
+                });
             navigate('/login', { replace: true });
         } catch (e) {
-            alert(e);
+            toast.error('Internal server error', {
+                position: 'top-center',
+            });
+            console.log(e);
         }
     }
     const [isMenuOpen, setIsMenuOpen] = useState(false);

@@ -6,29 +6,30 @@ import SubjectsPage from '@/pages/SubjectsPage';
 import TimetablePage from '@/pages/TimetablePage';
 import ManualUpdatePage from '@/pages/ManualUpdatePage';
 import ProtectedRoutes from '@/lib/ProtectedRoutes';
-import AddFooter from '@/lib/AddFooter';
+import Layout from '@/lib/Layout'; // New component, defined below
 
 function App() {
     return (
-        <Routes>
-            <Route path={'/login'} element={<LoginPage/>}/>
-            <Route path={'/register'} element={<RegisterPage/>}/>
-            <Route element={<ProtectedRoutes/>}>
-                <Route element={<AddFooter/>}>
-                    <Route path={'/'} element={<DashboardPage/>}/>
-                    <Route path={'/subjects'} element={<SubjectsPage/>}/>
-                    <Route
-                        path={'/timetable'}
-                        element={<TimetablePage/>}
-                    />
-                    <Route
-                        path={'/manualupdate'}
-                        element={<ManualUpdatePage/>}
-                    />
+        <div>
+            <Routes>
+                <Route path={'/login'} element={<LoginPage />} />
+                <Route path={'/register'} element={<RegisterPage />} />
+                <Route element={<ProtectedRoutes />}>
+                    <Route element={<Layout />}>
+                        <Route path={'/'} element={<DashboardPage />} />
+                        <Route path={'/subjects'} element={<SubjectsPage />} />
+                        <Route
+                            path={'/timetable'}
+                            element={<TimetablePage />}
+                        />
+                        <Route
+                            path={'/manualupdate'}
+                            element={<ManualUpdatePage />}
+                        />
+                    </Route>
                 </Route>
-            </Route>
-        </Routes>
+            </Routes>
+        </div>
     );
 }
-
 export default App;

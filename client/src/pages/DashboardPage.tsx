@@ -88,7 +88,7 @@ const DashboardPage = () => {
         );
     else
         return (
-            <main>
+            <>
                 <h1 className={'text-3xl font-extrabold'}>Dashboard</h1>
                 <p className={'text-muted-foreground'}>
                     Over view of your attendance
@@ -236,7 +236,7 @@ const DashboardPage = () => {
                         })}
                     </div>
                 </section>
-            </main>
+            </>
         );
 };
 

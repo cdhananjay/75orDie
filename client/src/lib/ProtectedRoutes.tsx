@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Navigate, Outlet } from 'react-router-dom';
-import Navbar from '@/components/Navbar';
 import { Spinner } from '@/components/ui/spinner';
 
 const ProtectedRoutes = () => {
@@ -24,13 +23,6 @@ const ProtectedRoutes = () => {
                 <Spinner />{' '}
             </div>
         );
-    return isLoggedIn ? (
-        <>
-            <Navbar /> <Outlet />
-        </>
-    ) : (
-        <Navigate to="/login" />
-    );
+    return isLoggedIn ? <Outlet /> : <Navigate to="/login" />;
 };
-
 export default ProtectedRoutes;
