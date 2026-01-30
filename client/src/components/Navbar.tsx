@@ -91,7 +91,7 @@ const Navbar = () => {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
                             <DropdownMenuItem
-                                onClick={() => navigate('/dashboard')}
+                                onClick={() => navigate('/')}
                                 className={
                                     currentPage == 0 ? 'bg-accent/20' : ''
                                 }
