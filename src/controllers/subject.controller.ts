@@ -34,7 +34,6 @@ export const createSubject = async (req: Request, res: Response) => {
                 )
             )
             .limit(1);
-        console.log(preExistingSubject);
         if (preExistingSubject)
             return res.send({
                 ok: false,

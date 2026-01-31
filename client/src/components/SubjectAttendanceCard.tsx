@@ -60,6 +60,32 @@ const SubjectOverviewCard = ({ name }: props) => {
             setLoading(false);
         }
     }
+    async function deleteSubject() {
+        setLoading(true);
+        try {
+            const { data } = await axios.delete('/api/sub', {
+                data: {
+                    subjectName: name,
+                },
+            });
+            if (data.ok) {
+                toast.success(`${name} deleted`, {
+                    position: 'top-center',
+                });
+            } else
+                toast.error(`error deleting ${name}: ${data.message}`, {
+                    position: 'top-center',
+                });
+        } catch (e) {
+            toast.error(`internal server error`, {
+                position: 'top-center',
+            });
+            console.log(e);
+        } finally {
+            setLoading(false);
+            navigate(0);
+        }
+    }
 
     async function addAttendance(present: boolean) {
         setLoading(true);
@@ -144,7 +170,7 @@ const SubjectOverviewCard = ({ name }: props) => {
                     value={percentage}
                 />
             </CardContent>
-            <CardFooter className={'gap-3'}>
+            <CardFooter className={'gap-3 flex-wrap'}>
                 <Button
                     onClick={async () => await addAttendance(true)}
                     variant={'outline'}
@@ -156,6 +182,12 @@ const SubjectOverviewCard = ({ name }: props) => {
                     variant={'outline'}
                 >
                     Mark Absent
+                </Button>
+                <Button
+                    onClick={async () => await deleteSubject()}
+                    variant={'destructive'}
+                >
+                    Delete
                 </Button>
             </CardFooter>
         </Card>

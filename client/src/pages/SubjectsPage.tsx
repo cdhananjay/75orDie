@@ -8,6 +8,17 @@ import { toast } from 'sonner';
 import axios from 'axios';
 import { Spinner } from '@/components/ui/spinner';
 import SubjectAttendanceCard from '@/components/SubjectAttendanceCard';
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from '@/components/ui/dialog';
+import { Field, FieldGroup } from '@/components/ui/field';
 
 type subject = {
     name: string;
@@ -73,7 +84,7 @@ const SubjectsPage = () => {
     else
         return (
             <>
-                <div className={'relative flex justify-between items-center'}>
+                <div className={'relative flex justify-between items-center '}>
                     <div>
                         <h1 className={'text-3xl font-extrabold'}>
                             All Subjects
@@ -83,12 +94,48 @@ const SubjectsPage = () => {
                             subjects.
                         </p>
                     </div>
-                    <Button
-                        onClick={() => setDisplayCard(true)}
-                        variant={'outline'}
-                    >
-                        <PlusIcon /> Create Subject
-                    </Button>
+                    <Dialog>
+                        <form>
+                            <DialogTrigger asChild>
+                                <Button variant="default">
+                                    {' '}
+                                    <PlusIcon /> Create Subject
+                                </Button>
+                            </DialogTrigger>
+                            <DialogContent className="sm:max-w-sm">
+                                <DialogHeader>
+                                    <DialogTitle>
+                                        Create New Subject
+                                    </DialogTitle>
+                                </DialogHeader>
+                                <FieldGroup>
+                                    <Field>
+                                        <Label htmlFor="name-1">Name</Label>
+                                        <Input
+                                            onChange={(e) =>
+                                                setSubjectName(e.target.value)
+                                            }
+                                            id="name-1"
+                                            name="name"
+                                        />
+                                    </Field>
+                                </FieldGroup>
+                                <DialogFooter>
+                                    <DialogClose asChild>
+                                        <Button variant="outline">
+                                            Cancel
+                                        </Button>
+                                    </DialogClose>
+                                    <Button
+                                        onClick={(e) => createSubject(e)}
+                                        type="submit"
+                                    >
+                                        Save changes
+                                    </Button>
+                                </DialogFooter>
+                            </DialogContent>
+                        </form>
+                    </Dialog>
                     {displayCard && (
                         <Card className="fixed md:absolute top-1/2 md:top-full left-1/2 md:left-auto -translate-x-1/2 md:translate-x-0 -translate-y-1/2 md:translate-y-0 right-auto md:right-0 mt-0 md:mt-2 w-full max-w-sm z-50 shadow-lg">
                             <CardContent>
