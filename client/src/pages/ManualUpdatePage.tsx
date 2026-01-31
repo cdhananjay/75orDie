@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { EditIcon, SaveIcon } from 'lucide-react';
+import { EditIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Spinner } from '@/components/ui/spinner';
 import axios from 'axios';
@@ -15,9 +15,7 @@ import {
 } from '@/components/ui/select';
 import {
     Card,
-    CardAction,
     CardContent,
-    CardDescription,
     CardFooter,
     CardHeader,
     CardTitle,
@@ -288,10 +286,10 @@ const ManualUpdatePage = () => {
                                     newClassesAttended >= 0 &&
                                     Number.isInteger(newTotalClasses) &&
                                     Number.isInteger(newClassesAttended) && (
-                                        <Card className={'bg-input/20 gap-2'}>
+                                        <Card className={'bg-primary/10 gap-2'}>
                                             <CardHeader>
                                                 <CardTitle>
-                                                    Current Values
+                                                    Preview Updated Values
                                                 </CardTitle>
                                             </CardHeader>
                                             <CardContent

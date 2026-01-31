@@ -12,7 +12,6 @@ import {
     Dialog,
     DialogClose,
     DialogContent,
-    DialogDescription,
     DialogFooter,
     DialogHeader,
     DialogTitle,
@@ -84,7 +83,7 @@ const SubjectsPage = () => {
     else
         return (
             <>
-                <div className={'relative flex justify-between items-center '}>
+                <div className={'flex justify-between items-center '}>
                     <div>
                         <h1 className={'text-3xl font-extrabold'}>
                             All Subjects
