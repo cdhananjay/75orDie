@@ -54,11 +54,11 @@ const TimetablePage = () => {
     async function addSubjectToDay() {
         setLoading(true);
         if (selectedSub == -1)
-            return toast.error('no subject selected', {
+            return toast.error('No subject selected.', {
                 position: 'bottom-center',
             });
         if (dayToAdd == -1)
-            return toast.error('day not selected', {
+            return toast.error('Select a day first.', {
                 position: 'bottom-center',
             });
         try {
@@ -68,7 +68,7 @@ const TimetablePage = () => {
                 newOccurrence: subjects[selectedSub].occurrence,
             });
             if (data.ok) {
-                toast.success('updated timetable', {
+                toast.success('Timetable updated.', {
                     position: 'bottom-center',
                 });
                 const updatedSubjects = [...subjects];
@@ -84,10 +84,10 @@ const TimetablePage = () => {
                     position: 'bottom-center',
                 });
         } catch (e) {
-            toast.error(`error adding ${subjects[selectedSub].name} to ${days[dayToAdd].name}`, {
+            toast.error('Client side error, check browser console for details.', {
                 position: 'bottom-center',
             });
-            console.log(e);
+            console.error(e);
         } finally {
             setSelectedSub(-1);
             setDayToAdd(-1);
@@ -98,20 +98,17 @@ const TimetablePage = () => {
     async function removeSubjectFromDay() {
         setLoading(true);
         if (selectedSub == -1)
-            return toast.error('no subject selected', {
+            return toast.error('No subject selected.', {
                 position: 'bottom-center',
             });
         if (dayToRemove == -1)
-            return toast.error('day not selected', {
+            return toast.error('Select a day first.', {
                 position: 'bottom-center',
             });
         if (subjects[selectedSub].occurrence[dayToRemove] == 0)
-            return toast.error(
-                `${subjects[selectedSub].name} has no occurrence on ${days[dayToRemove].name}`,
-                {
-                    position: 'bottom-center',
-                }
-            );
+            return toast.error('Client side error, check browser console for details.', {
+                position: 'bottom-center',
+            });
         try {
             subjects[selectedSub].occurrence[dayToRemove]--;
             const { data } = await axios.patch('/api/sub', {
@@ -119,7 +116,7 @@ const TimetablePage = () => {
                 newOccurrence: subjects[selectedSub].occurrence,
             });
             if (data.ok) {
-                toast.success('updated timetable', {
+                toast.success('Timetable updated.', {
                     position: 'bottom-center',
                 });
                 const updatedSubjects = [...subjects];
@@ -135,13 +132,10 @@ const TimetablePage = () => {
                     position: 'bottom-center',
                 });
         } catch (e) {
-            toast.error(
-                `error removing ${subjects[selectedSub].name} from ${days[dayToAdd].name}`,
-                {
-                    position: 'bottom-center',
-                }
-            );
-            console.log(e);
+            toast.error(`Client side error, check browser console for details`, {
+                position: 'bottom-center',
+            });
+            console.error(e);
         } finally {
             setSelectedSub(-1);
             setDayToRemove(-1);
@@ -177,10 +171,10 @@ const TimetablePage = () => {
             }
             setDays(tempDays);
         } catch (e) {
-            toast.error('Internal Server Error', {
+            toast.error('Client side error, check browser console for details', {
                 position: 'top-center',
             });
-            console.log(e);
+            console.error(e);
         } finally {
             setLoading(false);
         }

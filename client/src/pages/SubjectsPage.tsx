@@ -37,10 +37,10 @@ const SubjectsPage = () => {
             const { data } = await axios.get('/api/sub/');
             if (data.ok) setSubjects(data.subjects);
         } catch (e) {
-            toast.error('Internal Server Error', {
+            toast.error('Client side error, check browser console for details.', {
                 position: 'bottom-center',
             });
-            console.log(e);
+            console.error(e);
         } finally {
             setLoading(false);
         }
@@ -55,7 +55,7 @@ const SubjectsPage = () => {
         try {
             const { data } = await axios.post('/api/sub', { subjectName });
             if (data.ok) {
-                toast.success('subject created', {
+                toast.success('Subject created.', {
                     position: 'bottom-center',
                 });
                 setLoading(true);
@@ -65,10 +65,10 @@ const SubjectsPage = () => {
                     position: 'bottom-center',
                 });
         } catch (e) {
-            toast.error('internal server error', {
+            toast.error('Client side error, check browser console for details', {
                 position: 'bottom-center',
             });
-            console.log(e);
+            console.error(e);
         }
     }
 
@@ -81,7 +81,7 @@ const SubjectsPage = () => {
             });
 
             if (data.ok) {
-                toast.success(`${name} deleted`, {
+                toast.success(`${name} deleted.`, {
                     position: 'bottom-center',
                 });
 
@@ -92,10 +92,10 @@ const SubjectsPage = () => {
                 });
             }
         } catch (e) {
-            toast.error('Internal server error', {
+            toast.error('Client side error, check browser console for details', {
                 position: 'bottom-center',
             });
-            console.log(e);
+            console.error(e);
         }
     }
 

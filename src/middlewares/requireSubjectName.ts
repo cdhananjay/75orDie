@@ -9,9 +9,9 @@ async function requireSubjectName(
     next: NextFunction
 ) {
     if (!req.body.subjectName)
-        return res.send({ ok: false, message: 'subject name is required' });
+        return res.send({ ok: false, message: 'Subject name is required.' });
     if (!req.userId)
-        return res.send({ ok: false, message: 'user must be logged in' });
+        return res.send({ ok: false, message: 'User must be logged in.' });
     try {
         const [subject] = await db
             .select()
@@ -26,12 +26,13 @@ async function requireSubjectName(
         if (!subject)
             return res.send({
                 ok: false,
-                message: 'user does not have the requested subject',
+                message: 'User does not have the requested subject.',
             });
         req.subjectId = subject.id;
         next();
     } catch (e) {
-        return res.send({ ok: false, message: `${e}` });
+        console.log('Error in require subject name middleware', e);
+        return res.send({ ok: false, message: `Internal server Error` });
     }
 }
 export default requireSubjectName;

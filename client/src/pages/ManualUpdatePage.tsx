@@ -37,7 +37,7 @@ const ManualUpdatePage = () => {
         e.preventDefault();
         if (!subjects) return navigate(0);
         if (selectedSubjectIndex == -1)
-            return toast.error('no subject selected', {
+            return toast.error('No subject selected.', {
                 position: 'bottom-center',
             });
         if (
@@ -48,11 +48,11 @@ const ManualUpdatePage = () => {
                 Number.isInteger(newClassesAttended)
             )
         )
-            return toast.error('number of classes should be positive integer', {
+            return toast.error('Number of classes should be a positive integer.', {
                 position: 'bottom-center',
             });
         if (!(newClassesAttended <= newTotalClasses))
-            return toast.error('cannot attend more classes than the total', {
+            return toast.error('Cannot attend more classes than the total.', {
                 position: 'bottom-center',
             });
         try {
@@ -62,7 +62,7 @@ const ManualUpdatePage = () => {
                 subjectName: subjects[selectedSubjectIndex].name,
             });
             if (data.ok) {
-                toast.success('updated subject', {
+                toast.success('Updated subject.', {
                     position: 'bottom-center',
                 });
             } else
@@ -70,10 +70,10 @@ const ManualUpdatePage = () => {
                     position: 'bottom-center',
                 });
         } catch (e) {
-            toast.error('Internal Server Error', {
+            toast.error('Client side error, check browser logs for details.', {
                 position: 'bottom-center',
             });
-            console.log(e);
+            console.error(e);
         } finally {
             getSubjectData();
             setNewClassesAttended(-1);
@@ -86,10 +86,10 @@ const ManualUpdatePage = () => {
             const { data } = await axios.get('/api/sub/');
             if (data.ok) setSubjects(data.subjects);
         } catch (e) {
-            toast.error('Internal Server Error', {
+            toast.error('Client side error, check browser logs for details.', {
                 position: 'bottom-center',
             });
-            console.log(e);
+            console.error(e);
         } finally {
             setLoading(false);
         }

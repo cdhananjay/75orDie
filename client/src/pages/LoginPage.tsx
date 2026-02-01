@@ -15,7 +15,6 @@ import axios from 'axios';
 import { ThemeToggleButton } from '@/components/ThemeToggleButton';
 import { toast } from 'sonner';
 import Footer from '@/components/Footer';
-import { UsersIcon } from 'lucide-react';
 
 const LoginPage = () => {
     const nav = useNavigate();
@@ -32,10 +31,10 @@ const LoginPage = () => {
             toast.error(data.message, { position: 'bottom-center' });
             nav('/');
         } catch (e) {
-            toast.error('Internal server error.', {
+            toast.error('Client side error, check browser logs for details.', {
                 position: 'bottom-center',
             });
-            console.log(e);
+            console.error(e);
         }
     }
     return (
@@ -45,8 +44,12 @@ const LoginPage = () => {
                     <ThemeToggleButton />
                 </div>
                 <div className={'flex gap-5 flex-col justify-center items-center'}>
-                    <UsersIcon className={'size-40 bg-primary text-white rounded-full p-5'} />
-                    <h1 className={'text-3xl font-extrabold'}>Attendance Tracker</h1>
+                    <h1 className={'text-6xl text-primary font-extrabold'}>
+                        75or<span className={'text-red-500'}>Die</span>
+                    </h1>
+                    <p className={'text-center text-muted-foreground'}>
+                        Stop guessing if you're safe. Start tracking.
+                    </p>
                 </div>
                 <Card className='w-full max-w-sm'>
                     <CardHeader>

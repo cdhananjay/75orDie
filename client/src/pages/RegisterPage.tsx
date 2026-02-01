@@ -15,7 +15,6 @@ import axios from 'axios';
 import { ThemeToggleButton } from '@/components/ThemeToggleButton';
 import { toast } from 'sonner';
 import Footer from '@/components/Footer';
-import { UsersIcon } from 'lucide-react';
 
 const RegisterPage = () => {
     const nav = useNavigate();
@@ -32,10 +31,10 @@ const RegisterPage = () => {
             toast.error(data.message, { position: 'bottom-center' });
             nav('/');
         } catch (e) {
-            toast.error('Internal server error.', {
+            toast.error('Client side error, check browser logs for details.', {
                 position: 'bottom-center',
             });
-            console.log(e);
+            console.error(e);
         }
     }
     return (
@@ -45,12 +44,11 @@ const RegisterPage = () => {
                     <ThemeToggleButton />
                 </div>
                 <div className={'flex gap-5 flex-col justify-center items-center'}>
-                    <UsersIcon className={'size-40 bg-primary text-white rounded-full p-5'} />
-                    <h1 className={'text-3xl font-extrabold'}>Attendance Tracker</h1>
-                    <p className={'text-muted-foreground max-w-sm'}>
-                        Disclaimer : Basic features are usable and you can try them out, but I would
-                        not recommend using this app to track your attendance YET. I might nuke the
-                        database in near future before a final stable release.{' '}
+                    <h1 className={'text-6xl text-primary font-extrabold'}>
+                        75or<span className={'text-red-500'}>Die</span>
+                    </h1>
+                    <p className={'text-center text-muted-foreground'}>
+                        Stop guessing if you're safe. Start tracking.
                     </p>
                 </div>
                 <Card className='w-full max-w-sm'>

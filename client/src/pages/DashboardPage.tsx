@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-
 import {
     Card,
     CardAction,
@@ -37,35 +36,28 @@ const DashboardPage = () => {
     const [classesToday, setClassesToday] = useState<subject[]>([]);
     const [classesAttended, setClassesAttended] = useState(0);
     const [totalClasses, setTotalClasses] = useState(0);
-    const [classesTodayString, setClassesTodayString] = useState('');
     const getSubjectData = async () => {
         try {
             const { data } = await axios.get('/api/sub/');
             if (data.ok) {
                 setSubjects(data.subjects);
-                let classesString = '';
                 let attended = 0;
                 let total = 0;
                 let classes: typeof data.subjects = [];
                 for (const sub of data.subjects) {
                     for (let i = 0; i < sub.occurrence[new Date().getDay()]; i++) classes.push(sub);
-                    if (sub.occurrence[new Date().getDay()] >= 1)
-                        classesString = classesString + ' ' + sub.name;
-                    if (sub.occurrence[new Date().getDay()] > 1)
-                        classesString = classesString + `_x${sub.occurrence[new Date().getDay()]}`;
                     attended += sub.classesAttended;
                     total += sub.totalClasses;
                 }
-                setClassesTodayString(classesString);
                 setClassesToday(classes);
                 setClassesAttended(attended);
                 setTotalClasses(total);
             }
         } catch (e) {
-            toast.error('Internal Server Error', {
+            toast.error('Client side error, check browser logs for details.', {
                 position: 'bottom-center',
             });
-            console.log(e);
+            console.error(e);
         } finally {
             setLoading(false);
         }
@@ -85,22 +77,22 @@ const DashboardPage = () => {
                     newClassesAttended: sub.classesAttended,
                 });
                 if (data.ok)
-                    toast.success(`${sub.name} marked ${present ? 'present' : 'absent'}`, {
+                    toast.success(`${sub.name} marked ${present ? 'present' : 'absent'}.`, {
                         position: 'bottom-center',
                     });
                 else
                     toast.error(
-                        ` error marking ${present ? 'present' : 'absent'} for ${sub.name} : ${data.message}`,
+                        `Error marking ${present ? 'present' : 'absent'} for ${sub.name}.: ${data.message}`,
                         {
                             position: 'bottom-center',
                         }
                     );
             }
         } catch (e) {
-            toast.error('internal server error', {
+            toast.error('Client side error, check browser logs for details.', {
                 position: 'bottom-center',
             });
-            console.log(e);
+            console.error(e);
         } finally {
             setLoading(false);
             await getSubjectData();
@@ -116,25 +108,64 @@ const DashboardPage = () => {
         return (
             <>
                 <h1 className={'text-3xl font-extrabold'}>Dashboard</h1>
-                <p className={'text-muted-foreground'}>Over view of your attendance</p>
+                <p className={'text-muted-foreground'}>Overview of your attendance</p>
                 <section className={'my-5'}>
                     <h2 className={'text-2xl font-bold mb-3'}>Quick Actions</h2>
                     <div className={'flex flex-col justify-start gap-2 flex-nowrap'}>
-                        <p>
-                            <span className={'font-bold'}>Classes today:</span>
-                            {classesToday.length > 0 ? ` ${classesTodayString}` : ' none'}
-                        </p>
-                        <div className={'flex flex-row gap-2 items-center justify-start flex-wrap'}>
-                            <Button onClick={async () => await markAll(true)} variant={'outline'}>
-                                Mark all present
-                            </Button>
-                            <Button onClick={async () => await markAll(false)} variant={'outline'}>
-                                Mark all absent
-                            </Button>
-                            <Button onClick={() => navigate('/subjects')} variant={'outline'}>
-                                Mark custom
-                            </Button>
-                        </div>
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>Classes Today ({classesToday.length}) </CardTitle>
+                                <CardAction>{new Date().toDateString()}</CardAction>
+                            </CardHeader>
+                            {classesToday.length > 0 ? (
+                                <CardContent className={'flex flex-wrap gap-2'}>
+                                    {classesToday.map((sub, index) => {
+                                        return (
+                                            <Card key={index} className={'py-2 flex-1 bg-input'}>
+                                                <CardContent className={'text-center font-bold'}>
+                                                    {sub.name}
+                                                </CardContent>
+                                            </Card>
+                                        );
+                                    })}
+                                </CardContent>
+                            ) : (
+                                <CardContent className={'text-muted-foreground'}>
+                                    No classes scheduled for today.
+                                </CardContent>
+                            )}
+                            <CardFooter className={'w-full flex'}>
+                                <div
+                                    className={
+                                        'flex w-full gap-5 flex-row items-center justify-start flex-wrap'
+                                    }
+                                >
+                                    <Button
+                                        disabled={classesToday.length <= 0}
+                                        className={'flex-1'}
+                                        onClick={async () => await markAll(true)}
+                                        variant={'outline'}
+                                    >
+                                        Mark all present
+                                    </Button>
+                                    <Button
+                                        disabled={classesToday.length <= 0}
+                                        className={'flex-1'}
+                                        onClick={async () => await markAll(false)}
+                                        variant={'outline'}
+                                    >
+                                        Mark all absent
+                                    </Button>
+                                    <Button
+                                        className={'flex-1'}
+                                        onClick={() => navigate('/subjects')}
+                                        variant={'outline'}
+                                    >
+                                        Mark custom
+                                    </Button>
+                                </div>
+                            </CardFooter>
+                        </Card>
                     </div>
                 </section>
                 <section className={'my-5'}>
@@ -181,47 +212,68 @@ const DashboardPage = () => {
                         </CardFooter>
                     </Card>
                     <div className={'flex gap-5'}>
-                        <Card className={'w-full'}>
-                            <CardHeader>
-                                <CircleCheckBigIcon
-                                    size={40}
-                                    className={'rounded-xl p-2 bg-green-200 stroke-green-500'}
-                                />
-                                <p className={'text-xl font-bold'}>{classesAttended}</p>
-                                <p className={'text-muted-foreground'}>Classes Attended</p>
-                            </CardHeader>
-                        </Card>
-                        <Card className={'w-full'}>
-                            <CardHeader>
-                                <BookOpenIcon
-                                    size={40}
-                                    className={'rounded-xl p-2 bg-[#DAE1F9] stroke-primary'}
-                                />
-                                <p className={'text-xl font-bold'}>{totalClasses}</p>
-                                <p className={'text-muted-foreground'}>Total Classes</p>
-                            </CardHeader>
-                        </Card>
-                        <Card className={'w-full'}>
-                            <CardHeader>
-                                <XCircleIcon
-                                    size={40}
-                                    className={'rounded-xl p-2 bg-red-200 stroke-red-500'}
-                                />
-                                <p className={'text-xl font-bold'}>
-                                    {totalClasses - classesAttended}
+                        <Card className={'w-full justify-center'}>
+                            <CardHeader className={'justify-center items-center'}>
+                                <div className={'flex gap-2 items-center justify-center'}>
+                                    <p className={'text-xl text-center font-bold'}>
+                                        {classesAttended}
+                                    </p>
+                                    <CircleCheckBigIcon
+                                        size={40}
+                                        className={'rounded-xl p-2 bg-green-200 stroke-green-500'}
+                                    />
+                                </div>
+                                <p className={'text-muted-foreground text-center'}>
+                                    Classes Attended
                                 </p>
-                                <p className={'text-muted-foreground'}>Classes Attended</p>
+                            </CardHeader>
+                        </Card>
+                        <Card className={'w-full justify-center'}>
+                            <CardHeader className={'justify-center items-center'}>
+                                <div className={'flex gap-2 items-center justify-center'}>
+                                    <p className={'text-xl text-center font-bold'}>
+                                        {totalClasses}
+                                    </p>
+                                    <BookOpenIcon
+                                        size={40}
+                                        className={'rounded-xl p-2 bg-[#DAE1F9] stroke-primary'}
+                                    />
+                                </div>
+                                <p className={'text-muted-foreground text-center'}>Total Classes</p>
+                            </CardHeader>
+                        </Card>
+                        <Card className={'w-full justify-center'}>
+                            <CardHeader className={'justify-center items-center'}>
+                                <div className={'flex gap-2 items-center justify-center'}>
+                                    <p className={'text-xl text-center font-bold'}>
+                                        {totalClasses - classesAttended}
+                                    </p>
+                                    <XCircleIcon
+                                        size={40}
+                                        className={'rounded-xl p-2 bg-red-200 stroke-red-500'}
+                                    />
+                                </div>
+                                <p className={'text-muted-foreground text-center'}>
+                                    Classes missed
+                                </p>
                             </CardHeader>
                         </Card>
                     </div>
                 </section>
                 <section className={'my-5'}>
                     <h2 className={'text-2xl font-bold mb-3'}>Subjects overview</h2>
-                    <div className={'grid gap-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-3'}>
-                        {subjects.map((sub) => {
-                            return <SubjectOverviewCard key={sub.name} {...sub} />;
-                        })}
-                    </div>
+                    {subjects.length <= 0 && (
+                        <p className={'text-muted-foreground'}>
+                            No subjects found, create a subject to display.
+                        </p>
+                    )}
+                    {subjects.length > 0 && (
+                        <div className={'grid gap-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-3'}>
+                            {subjects.map((sub) => {
+                                return <SubjectOverviewCard key={sub.name} {...sub} />;
+                            })}
+                        </div>
+                    )}
                 </section>
             </>
         );

@@ -40,7 +40,7 @@ const Navbar = () => {
         try {
             const { data } = await axios.post('/api/auth/logout');
             if (data.ok)
-                toast.success('logged out', {
+                toast.success('Logged out.', {
                     position: 'bottom-center',
                 });
             else
@@ -49,10 +49,10 @@ const Navbar = () => {
                 });
             navigate('/login', { replace: true });
         } catch (e) {
-            toast.error('Internal server error', {
+            toast.error('Client side error, check browser console for details.', {
                 position: 'bottom-center',
             });
-            console.log(e);
+            console.error(e);
         }
     }
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -60,8 +60,8 @@ const Navbar = () => {
     return (
         <nav className='w-full sticky top-0 bg-card'>
             <div className='max-w-7xl mx-auto px-4 py-4 flex justify-between items-center'>
-                <Link className={'text-xl text-primary font-extrabold'} to={'/'}>
-                    Attendance Tracker
+                <Link className={'text-3xl text-primary font-extrabold'} to={'/'}>
+                    75or<span className={'text-red-500'}>Die</span>
                 </Link>
                 <div className={'md:hidden flex gap-5 justify-center items-center'}>
                     <ThemeToggleButton />

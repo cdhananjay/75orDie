@@ -53,10 +53,10 @@ const SubjectOverviewCard = ({ name, onDelete }: props) => {
                 });
             }
         } catch (e) {
-            toast.error('internal server error', {
+            toast.error('Client side error, check browser logs for details.', {
                 position: 'bottom-center',
             });
-            console.log(e);
+            console.error(e);
         } finally {
             setLoading(false);
         }
@@ -66,7 +66,7 @@ const SubjectOverviewCard = ({ name, onDelete }: props) => {
         setLoading(true);
         try {
             if (!subject)
-                return toast.error('subject name required', {
+                return toast.error('Subject required.', {
                     position: 'bottom-center',
                 });
             const newTotalClasses = subject.totalClasses + 1;
@@ -79,7 +79,7 @@ const SubjectOverviewCard = ({ name, onDelete }: props) => {
                 newClassesAttended,
             });
             if (data.ok) {
-                toast.success(`attendance updated`, {
+                toast.success(`Attendance updated.`, {
                     position: 'bottom-center',
                 });
                 setSubject({
@@ -93,10 +93,10 @@ const SubjectOverviewCard = ({ name, onDelete }: props) => {
                 });
             }
         } catch (e) {
-            toast.error('internal server error', {
+            toast.error('Client side error, check browser logs for details.', {
                 position: 'bottom-center',
             });
-            console.log(e);
+            console.error(e);
         } finally {
             setLoading(false);
             navigate('/subjects');
